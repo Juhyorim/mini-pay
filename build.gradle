@@ -34,3 +34,11 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+task copyPrivate(type: Copy) {
+    copy {
+        from './mini-pay-submodule'
+        include "*.yml"
+        into 'src/main/resources'
+    }
+}
