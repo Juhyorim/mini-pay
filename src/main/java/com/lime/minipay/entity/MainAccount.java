@@ -19,7 +19,7 @@ public class MainAccount {
     private Long mainAccountId;
 
     @OneToOne
-    @JoinColumn(name = "member_id", referencedColumnName = "member_id", nullable = false)
+    @JoinColumn(name = "member_id", referencedColumnName = "memberId", nullable = false)
     private Member member;
 
     @Column(nullable = false)

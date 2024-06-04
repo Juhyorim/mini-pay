@@ -18,10 +18,10 @@ import lombok.NoArgsConstructor;
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long member_id;
+    private Long memberId;
 
     @Column(nullable = false, unique = true)
-    private String login_id;
+    private String loginId;
 
     @Column(nullable = false)
     private String password;
@@ -34,7 +34,7 @@ public class Member {
 
     public static Member createMember(String login_id, String password, String name) {
         Member newMember = new Member();
-        newMember.login_id = login_id;
+        newMember.loginId = login_id;
         newMember.password = password;
         newMember.name = name;
 
