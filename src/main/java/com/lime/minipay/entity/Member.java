@@ -20,7 +20,7 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long member_id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String login_id;
 
     @Column(nullable = false)
@@ -29,7 +29,6 @@ public class Member {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
     @OneToOne(mappedBy = "member")
     private MainAccount mainAccount;
 

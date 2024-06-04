@@ -14,9 +14,8 @@ public class SavingAccount {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long savingAccountId;
 
-    @Column(nullable = false)
     @ManyToOne
-    @JoinColumn(name = "main_account_id", referencedColumnName = "mainAccountId")
+    @JoinColumn(name = "main_account_id", referencedColumnName = "mainAccountId", nullable = false)
     private MainAccount mainAccount;
 
     @Column(nullable = false)
