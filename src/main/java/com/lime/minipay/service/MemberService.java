@@ -12,11 +12,24 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final JwtService jwtService;
 
     public Member addMember(MemberDto.CreateRequest request) {
         Member member = Member.createMember(request.getLoginId(), request.getPassword(), request.getName());
         Member savedMember = memberRepository.save(member);
 
         return savedMember;
+    }
+
+    public MemberDto.LoginResponse login(MemberDto.LoginRequest request) {
+        memberRepository.findByLoginIdAndPassword(request.getLoginId(), request.getPassword())
+                .orElseThrow(() -> new RuntimeException());
+
+        //jwt 토큰 발급
+        String accessToken = jwtService.createJwt(request.getLoginId());
+
+        return MemberDto.LoginResponse.builder()
+                .accessToken(accessToken)
+                .build();
     }
 }
