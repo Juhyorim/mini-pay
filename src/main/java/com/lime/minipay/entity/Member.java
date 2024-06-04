@@ -1,0 +1,44 @@
+package com.lime.minipay.entity;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+@Entity
+@Table(name = "member")
+public class Member {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long member_id;
+
+    @Column(nullable = false)
+    private String login_id;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    @OneToOne(mappedBy = "member")
+    private MainAccount mainAccount;
+
+    public static Member createMember(String login_id, String password, String name) {
+        Member newMember = new Member();
+        newMember.login_id = login_id;
+        newMember.password = password;
+        newMember.name = name;
+
+        return newMember;
+    }
+}
