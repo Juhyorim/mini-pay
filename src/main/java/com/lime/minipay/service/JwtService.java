@@ -19,8 +19,8 @@ public class JwtService {
     @Value("${jwt.expiredMs}")
     private Long expiredJwtMs;
 
-    public String getMemberLoginId(String token, String secretKey) {
-
+    public String getMemberLoginId(String token) {
+        token = token.substring(7);
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token)
                 .getBody().get("loginId", String.class);
     }

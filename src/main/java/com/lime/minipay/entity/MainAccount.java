@@ -8,10 +8,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "main_account")
 public class MainAccount {
     @Id
@@ -30,4 +33,13 @@ public class MainAccount {
 
     @Column(nullable = false)
     private Long chargeLimit; //1일 충전 한도
+
+    public static MainAccount of(Member member, Long chargeLimit) {
+        MainAccount mainAccount = new MainAccount();
+
+        mainAccount.member = member;
+        mainAccount.chargeLimit = chargeLimit;
+
+        return mainAccount;
+    }
 }
