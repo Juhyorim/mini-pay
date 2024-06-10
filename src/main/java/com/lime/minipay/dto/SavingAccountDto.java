@@ -16,7 +16,7 @@ public class SavingAccountDto {
 
         public static GetAll of(List<SavingAccount> list) {
             return new GetAll(list.stream()
-                    .map((sa) -> new Info(sa.getBalance()))
+                    .map((sa) -> new Info(sa.getSavingAccountId(), sa.getBalance()))
                     .collect(Collectors.toList())
             );
         }
@@ -26,6 +26,15 @@ public class SavingAccountDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Info {
+        private Long savingAccountId;
         private Long balance;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ChargeRequest {
+        private Long amount;
+        private Long savingAccountId;
     }
 }

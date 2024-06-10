@@ -51,4 +51,8 @@ public class MainAccount {
         this.balance += cash;
         this.dayCharged += cash;
     }
+
+    public void withDraw(Long amount) {
+        this.balance -= amount;
+    }
 }

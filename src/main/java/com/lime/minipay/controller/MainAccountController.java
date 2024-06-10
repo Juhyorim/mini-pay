@@ -31,7 +31,7 @@ public class MainAccountController {
         return ResponseEntity.ok(mainAccountService.getMainAccount(member));
     }
 
-    @PostMapping("add")
+    @PostMapping("charge-cash")
     public ResponseEntity<MainAccountDto.Response> addCash(@RequestBody MainAccountDto.AddCashRequest request, HttpServletRequest httpServletRequest)
             throws InterruptedException {
         Member member = (Member) httpServletRequest.getAttribute("member");

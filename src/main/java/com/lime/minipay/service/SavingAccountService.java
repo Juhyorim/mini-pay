@@ -1,12 +1,15 @@
 package com.lime.minipay.service;
 
+import com.lime.minipay.dto.MainAccountDto;
 import com.lime.minipay.dto.SavingAccountDto;
+import com.lime.minipay.dto.SavingAccountDto.ChargeRequest;
 import com.lime.minipay.entity.MainAccount;
 import com.lime.minipay.entity.Member;
 import com.lime.minipay.entity.SavingAccount;
 import com.lime.minipay.repository.MainAccountRepository;
 import com.lime.minipay.repository.SavingAccountRepository;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -34,5 +37,16 @@ public class SavingAccountService {
                 .orElseThrow(() -> new RuntimeException());
 
         return SavingAccountDto.GetAll.of(savingAccounts);
+    }
+
+    public MainAccountDto.Response chargeCash(Member member, ChargeRequest request) {
+        SavingAccount savingAccount = savingAccountRepository.findByIdWithLock(request.getSavingAccountId())
+                .orElseThrow(() -> new RuntimeException());
+
+        savingAccount.addCash(request.getAmount());
+
+        return MainAccountDto.Response.builder()
+                .balance(savingAccount.getBalance())
+                .build();
     }
 }

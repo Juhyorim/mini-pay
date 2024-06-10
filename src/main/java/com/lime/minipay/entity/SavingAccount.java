@@ -1,5 +1,6 @@
 package com.lime.minipay.entity;
 
+import com.lime.minipay.error.NoMoneyEnoughException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,5 +32,13 @@ public class SavingAccount {
         savingAccount.mainAccount = mainAccount;
 
         return savingAccount;
+    }
+
+    public void addCash(Long amount) {
+        if (mainAccount.getBalance() < amount)
+            throw new NoMoneyEnoughException();
+
+        mainAccount.withDraw(amount);
+        this.balance += amount;
     }
 }
