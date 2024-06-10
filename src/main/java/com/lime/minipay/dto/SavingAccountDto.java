@@ -1,0 +1,31 @@
+package com.lime.minipay.dto;
+
+import com.lime.minipay.entity.SavingAccount;
+import java.util.List;
+import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+public class SavingAccountDto {
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class GetAll {
+        private List<Info> list;
+
+        public static GetAll of(List<SavingAccount> list) {
+            return new GetAll(list.stream()
+                    .map((sa) -> new Info(sa.getBalance()))
+                    .collect(Collectors.toList())
+            );
+        }
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Info {
+        private Long balance;
+    }
+}
