@@ -42,4 +42,13 @@ public class MainAccount {
 
         return mainAccount;
     }
+
+    public void addCash(Long cash) {
+        if (dayCharged + cash > chargeLimit) {
+            throw new RuntimeException();
+        }
+
+        this.balance += cash;
+        this.dayCharged += cash;
+    }
 }

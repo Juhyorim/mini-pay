@@ -13,4 +13,11 @@ public class MainAccountDto {
     public static class Response {
         private Long balance;
     }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class AddCashRequest {
+        private Long amount;
+    }
 }
