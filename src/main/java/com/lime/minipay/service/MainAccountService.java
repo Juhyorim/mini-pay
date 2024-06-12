@@ -20,7 +20,7 @@ public class MainAccountService {
     private final MainAccountRepository mainAccountRepository;
 
     public MainAccountDto.Response getMainAccount(Member member) {
-        MainAccount account = mainAccountRepository.findByMember(member)
+        MainAccount account = mainAccountRepository.findByMemberWithLock(member)
                 .orElseThrow(() -> new RuntimeException());
 
         return MainAccountDto.Response.builder()
@@ -30,11 +30,12 @@ public class MainAccountService {
 
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.REPEATABLE_READ)
     public MainAccountDto.Response addCash(Member member, AddCashRequest request) throws InterruptedException {
-        MainAccount mainAccount = mainAccountRepository.findByMember(member)
+        MainAccount mainAccount = mainAccountRepository.findByMemberWithLock(member)
                 .orElseThrow(() -> new RuntimeException());
 
-        log.info(String.valueOf(mainAccount.getBalance()));
+        log.info("###: " + mainAccount.getBalance());
         mainAccount.addCash(request.getAmount());
+        log.info("###: " + mainAccount.getBalance());
 
         return MainAccountDto.Response.builder()
                 .balance(mainAccount.getBalance())

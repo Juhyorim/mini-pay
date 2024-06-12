@@ -14,4 +14,9 @@ public class GlobalControllerAdvice {
         log.info("잔액 부족");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessage("잔액이 부족합니다."));
     }
+
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<ErrorMessage> ForbiddenExceptionHandler(ForbiddenException e) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorMessage(e.getMessage()));
+    }
 }

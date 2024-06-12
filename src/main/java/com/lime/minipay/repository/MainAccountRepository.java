@@ -14,5 +14,8 @@ public interface MainAccountRepository extends JpaRepository<MainAccount, Long> 
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select h from MainAccount h where h.member = :member")
+    Optional<MainAccount> findByMemberWithLock(Member member);
+
+    @Query("select h from MainAccount h where h.member = :member")
     Optional<MainAccount> findByMember(Member member);
 }

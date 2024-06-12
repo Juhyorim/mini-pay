@@ -3,6 +3,7 @@ package com.lime.minipay.entity;
 import com.lime.minipay.error.NoMoneyEnoughException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -20,7 +21,7 @@ public class SavingAccount {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long savingAccountId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "main_account_id", referencedColumnName = "mainAccountId", nullable = false)
     private MainAccount mainAccount;
 

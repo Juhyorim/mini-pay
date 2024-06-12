@@ -52,7 +52,7 @@ public class AccountServiceConcurrencyTest {
         future2.get();
 
         // 추가 검증 로직
-        MainAccount account = mainAccountRepository.findByMember(member).orElseThrow(() -> new RuntimeException());
+        MainAccount account = mainAccountRepository.findByMemberWithLock(member).orElseThrow(() -> new RuntimeException());
         System.out.println("Final balance: " + account.getBalance());
     }
 
