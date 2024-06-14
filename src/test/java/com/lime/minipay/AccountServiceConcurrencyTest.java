@@ -5,7 +5,6 @@ import com.lime.minipay.entity.MainAccount;
 import com.lime.minipay.entity.Member;
 import com.lime.minipay.repository.MainAccountRepository;
 import com.lime.minipay.repository.MemberRepository;
-import com.lime.minipay.service.MainAccountService;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ import java.util.concurrent.*;
 public class AccountServiceConcurrencyTest {
 
     @Autowired
-    private MainAccountService accountService;
+    private com.lime.minipay.service.MainAccountService accountService;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -52,7 +51,7 @@ public class AccountServiceConcurrencyTest {
         future2.get();
 
         // 추가 검증 로직
-        MainAccount account = mainAccountRepository.findByMemberWithLock(member).orElseThrow(() -> new RuntimeException());
+        MainAccount account = mainAccountRepository.findByMember(member).orElseThrow(() -> new RuntimeException());
         System.out.println("Final balance: " + account.getBalance());
     }
 
