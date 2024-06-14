@@ -41,4 +41,9 @@ public class MainAccountService {
                 .balance(mainAccount.getBalance())
                 .build();
     }
+
+    @Transactional(isolation = Isolation.SERIALIZABLE)
+    public void initDayCharged() {
+        mainAccountRepository.initDayCharged();
+    }
 }
