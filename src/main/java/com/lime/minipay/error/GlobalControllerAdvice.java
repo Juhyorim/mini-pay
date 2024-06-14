@@ -19,4 +19,10 @@ public class GlobalControllerAdvice {
     public ResponseEntity<ErrorMessage> ForbiddenExceptionHandler(ForbiddenException e) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorMessage(e.getMessage()));
     }
+
+    @ExceptionHandler(ExceedChargeLimitException.class)
+    public ResponseEntity<ErrorMessage> ExceedChargeLimitExceptionHandler() {
+        log.info("일일 충전한도 초과");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessage("일일 충전 한도를 초과하였습니다"));
+    }
 }

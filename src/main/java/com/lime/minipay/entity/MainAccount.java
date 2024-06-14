@@ -1,5 +1,6 @@
 package com.lime.minipay.entity;
 
+import com.lime.minipay.error.ExceedChargeLimitException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -44,8 +45,9 @@ public class MainAccount {
     }
 
     public void addCash(Long cash) {
+        //일일 충전 한도 초과 확인
         if (dayCharged + cash > chargeLimit) {
-            throw new RuntimeException();
+            throw new ExceedChargeLimitException("충전 한도 초과");
         }
 
         this.balance += cash;
@@ -54,5 +56,29 @@ public class MainAccount {
 
     public void withDraw(Long amount) {
         this.balance -= amount;
+    }
+
+    public Long transferCash(MainAccount toAccount, Long amount) {
+        if (this.balance < amount) {
+            //만원단위 충전하기
+            autoChargeCash(amount);
+        }
+
+        this.balance -= amount;
+        toAccount.receiveCash(amount);
+
+        return this.balance;
+    }
+
+    private void autoChargeCash(Long amount) {
+        //TODO 오차 확인
+        //자동 충전 금액 계산(만원 단위)
+        Long chargeAmount = ((long) Math.ceil((amount - balance) / 10_000)) * 10_000;
+
+        addCash(chargeAmount);
+    }
+
+    private void receiveCash(Long amount) {
+        this.balance += amount;
     }
 }

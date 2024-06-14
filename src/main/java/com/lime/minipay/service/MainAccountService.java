@@ -5,6 +5,7 @@ import com.lime.minipay.dto.MainAccountDto.AddCashRequest;
 import com.lime.minipay.entity.MainAccount;
 import com.lime.minipay.entity.Member;
 import com.lime.minipay.repository.MainAccountRepository;
+import com.lime.minipay.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class MainAccountService {
     private final MainAccountRepository mainAccountRepository;
+    private final MemberRepository memberRepository;
 
     public MainAccountDto.Response getMainAccount(Member member) {
         MainAccount account = mainAccountRepository.findByMemberWithLock(member)
@@ -45,5 +47,23 @@ public class MainAccountService {
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public void initDayCharged() {
         mainAccountRepository.initDayCharged();
+    }
+
+    public MainAccountDto.Response transferToMember(Member member, MainAccountDto.TransferToMemberRequest request) {
+        Member toUser = memberRepository.findById(request.getMemberId())
+                .orElseThrow(() -> new RuntimeException());
+
+        MainAccount toAccount = mainAccountRepository.findByMemberWithLock(toUser)
+                .orElseThrow(() -> new RuntimeException());
+
+        //TODO 데드락 발생가능 확인
+        MainAccount fromAccount = mainAccountRepository.findByMemberWithLock(member)
+                .orElseThrow(() -> new RuntimeException());
+
+        Long remain = fromAccount.transferCash(toAccount, request.getAmount());
+
+        return MainAccountDto.Response.builder()
+                .balance(remain)
+                .build();
     }
 }

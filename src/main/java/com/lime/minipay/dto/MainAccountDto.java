@@ -20,4 +20,12 @@ public class MainAccountDto {
     public static class AddCashRequest {
         private Long amount;
     }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class TransferToMemberRequest {
+        private Long memberId;
+        private Long amount;
+    }
 }
