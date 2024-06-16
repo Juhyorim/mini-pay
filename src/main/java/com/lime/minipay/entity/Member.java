@@ -2,6 +2,7 @@ package com.lime.minipay.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,7 +30,7 @@ public class Member {
     @Column(nullable = false)
     private String name;
 
-    @OneToOne(mappedBy = "member")
+    @OneToOne(mappedBy = "member", fetch = FetchType.LAZY)
     private MainAccount mainAccount;
 
     public static Member createMember(String login_id, String password, String name) {
