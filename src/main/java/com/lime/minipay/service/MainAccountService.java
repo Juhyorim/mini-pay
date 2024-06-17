@@ -3,9 +3,11 @@ package com.lime.minipay.service;
 import com.lime.minipay.dto.MainAccountDto;
 import com.lime.minipay.dto.MainAccountDto.AddCashRequest;
 import com.lime.minipay.dto.TransferDto;
+import com.lime.minipay.dto.TransferDto.Info;
 import com.lime.minipay.entity.MainAccount;
 import com.lime.minipay.entity.Member;
 import com.lime.minipay.entity.Transfer;
+import com.lime.minipay.error.ForbiddenException;
 import com.lime.minipay.repository.MainAccountRepository;
 import com.lime.minipay.repository.MemberRepository;
 import com.lime.minipay.repository.TransferRepository;
@@ -88,6 +90,23 @@ public class MainAccountService {
                 .fromMemberName(transfer.getFromAccount().getMember().getName())
                 .amount(transfer.getAmount())
                 .createdAt(transfer.getCreatedAt())
+                .status(transfer.getStatus())
                 .build();
+    }
+
+    public Info cancel(Member member, Long transferId) {
+        Transfer transfer = transferRepository.findByIdWithLock(transferId)
+                .orElseThrow(() -> new RuntimeException("찾을 수 없습니다"));
+
+        if (!member.equals(transfer.getFromAccount().getMember())) {
+            throw new ForbiddenException("권한이 없습니다");
+        }
+
+        MainAccount mainAccount = mainAccountRepository.findByMemberWithLock(member)
+                .orElseThrow(() -> new RuntimeException());
+
+        transfer.cancel();
+
+        return TransferDto.Info.of(transfer);
     }
 }

@@ -83,6 +83,10 @@ public class MainAccount {
         addCash(chargeAmount);
     }
 
+    public void transferCancel(Long amount) {
+        receiveCash(amount);
+    }
+
     private void receiveCash(Long amount) {
         this.balance += amount;
     }

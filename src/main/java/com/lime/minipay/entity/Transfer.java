@@ -51,4 +51,9 @@ public class Transfer {
 
         return transfer;
     }
+
+    public void cancel() {
+        this.status = TransferStatus.CANCEL;
+        this.fromAccount.transferCancel(this.amount);
+    }
 }

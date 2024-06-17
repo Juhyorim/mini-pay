@@ -62,4 +62,15 @@ public class MainAccountController {
 
         return ResponseEntity.ok(transferDetail);
     }
+
+    @DeleteMapping("transfer/{transferId}")
+    public ResponseEntity cancel(@PathVariable(name = "transferId") Long transferId,
+                                 HttpServletRequest httpServletRequest) {
+        Member member = (Member) httpServletRequest.getAttribute("member");
+        member = memberService.findById(member.getMemberId());
+
+        Info transferDetail = mainAccountService.cancel(member, transferId);
+
+        return ResponseEntity.ok(transferDetail);
+    }
 }
