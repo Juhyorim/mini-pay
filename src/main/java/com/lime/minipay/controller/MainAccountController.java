@@ -3,6 +3,7 @@ package com.lime.minipay.controller;
 import com.lime.minipay.dto.MainAccountDto;
 import com.lime.minipay.dto.MainAccountDto.Response;
 import com.lime.minipay.dto.TransferDto;
+import com.lime.minipay.dto.TransferDto.Info;
 import com.lime.minipay.entity.Member;
 import com.lime.minipay.service.MainAccountService;
 import com.lime.minipay.service.MemberService;
@@ -49,5 +50,16 @@ public class MainAccountController {
         TransferDto.TransferResponse response = mainAccountService.transferToMember(member, request);
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("transfer/{transferId}")
+    public ResponseEntity getTransferDetail(@PathVariable(name = "transferId") Long transferId,
+                                            HttpServletRequest httpServletRequest) {
+        Member member = (Member) httpServletRequest.getAttribute("member");
+        member = memberService.findById(member.getMemberId());
+
+        Info transferDetail = mainAccountService.getTransferDetail(member, transferId);
+
+        return ResponseEntity.ok(transferDetail);
     }
 }

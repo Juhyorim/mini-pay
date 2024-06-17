@@ -75,4 +75,19 @@ public class MainAccountService {
                 .remain(fromAccount.getBalance())
                 .build();
     }
+
+    public TransferDto.Info getTransferDetail(Member member, Long transferId) {
+        Transfer transfer = transferRepository.findById(transferId)
+                .orElseThrow(() -> new RuntimeException("찾을 수 없습니다"));
+
+        return TransferDto.Info.builder()
+                .transferId(transferId)
+                .toMemberId(transfer.getToAccount().getMember().getMemberId())
+                .toMemberName(transfer.getToAccount().getMember().getName())
+                .fromMemberId(transfer.getFromAccount().getMember().getMemberId())
+                .fromMemberName(transfer.getFromAccount().getMember().getName())
+                .amount(transfer.getAmount())
+                .createdAt(transfer.getCreatedAt())
+                .build();
+    }
 }
