@@ -4,6 +4,7 @@ import com.lime.minipay.DividedMoneys;
 import com.lime.minipay.dto.MainAccountDto;
 import com.lime.minipay.dto.SettlementDto;
 import com.lime.minipay.dto.SettlementDto.Create;
+import com.lime.minipay.dto.SettlementDto.Response;
 import com.lime.minipay.entity.Member;
 import com.lime.minipay.entity.MemberSettlement;
 import com.lime.minipay.entity.Settlement;
@@ -95,5 +96,15 @@ public class SettlementService {
 
         //완료표시
         memberSettlement.complete();
+    }
+
+    public Response getInfo(Long settlementId) {
+        Settlement settlement = settlementRepository.findById(settlementId)
+                .orElseThrow(() -> new RuntimeException("찾을 수 없음"));
+
+        List<MemberSettlement> memberSettlements = memberSettlementRepository.findBySettlement(settlement)
+                .orElseThrow(() -> new RuntimeException("찾을 수 없음"));
+
+        return Response.of(settlement, memberSettlements);
     }
 }
