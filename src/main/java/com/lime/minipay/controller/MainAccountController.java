@@ -41,7 +41,7 @@ public class MainAccountController {
         return ResponseEntity.ok(response);
     }
 
-    @PatchMapping("transfer") //송금 생성
+    @PostMapping("transfer") //송금 생성
     public ResponseEntity<TransferDto.TransferResponse> transferToMember(
             @RequestBody MainAccountDto.TransferToMemberRequest request, HttpServletRequest httpServletRequest) {
         Member member = (Member) httpServletRequest.getAttribute("member");
