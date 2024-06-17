@@ -90,4 +90,8 @@ public class MainAccount {
     private void receiveCash(Long amount) {
         this.balance += amount;
     }
+
+    public void transferComplete(Long amount) {
+        receiveCash(amount);
+    }
 }

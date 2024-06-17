@@ -98,6 +98,7 @@ public class MainAccountService {
         Transfer transfer = transferRepository.findByIdWithLock(transferId)
                 .orElseThrow(() -> new RuntimeException("찾을 수 없습니다"));
 
+        //보낸 사람만 취소 가능
         if (!member.equals(transfer.getFromAccount().getMember())) {
             throw new ForbiddenException("권한이 없습니다");
         }
@@ -106,6 +107,24 @@ public class MainAccountService {
                 .orElseThrow(() -> new RuntimeException());
 
         transfer.cancel();
+
+        return TransferDto.Info.of(transfer);
+    }
+
+    public Info approve(Member member, Long transferId) {
+        Transfer transfer = transferRepository.findByIdWithLock(transferId)
+                .orElseThrow(() -> new RuntimeException("찾을 수 없습니다"));
+
+        //받은 사람만 승인 가능
+        if (!member.equals(transfer.getToAccount().getMember())) {
+            throw new ForbiddenException("권한이 없습니다");
+        }
+
+        //내 계좌 락
+        MainAccount mainAccount = mainAccountRepository.findByMemberWithLock(member)
+                .orElseThrow(() -> new RuntimeException());
+
+        transfer.approve();
 
         return TransferDto.Info.of(transfer);
     }

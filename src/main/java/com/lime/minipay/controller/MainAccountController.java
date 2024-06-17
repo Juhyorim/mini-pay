@@ -73,4 +73,15 @@ public class MainAccountController {
 
         return ResponseEntity.ok(transferDetail);
     }
+
+    @PostMapping("transfer/{transferId}/approve")
+    public ResponseEntity approve(@PathVariable(name = "transferId") Long transferId,
+                                  HttpServletRequest httpServletRequest) {
+        Member member = (Member) httpServletRequest.getAttribute("member");
+        member = memberService.findById(member.getMemberId());
+
+        Info transferDetail = mainAccountService.approve(member, transferId);
+
+        return ResponseEntity.ok(transferDetail);
+    }
 }

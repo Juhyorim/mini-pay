@@ -56,4 +56,9 @@ public class Transfer {
         this.status = TransferStatus.CANCEL;
         this.fromAccount.transferCancel(this.amount);
     }
+
+    public void approve() {
+        this.status = TransferStatus.COMPLETE;
+        this.toAccount.transferComplete(this.amount);
+    }
 }
