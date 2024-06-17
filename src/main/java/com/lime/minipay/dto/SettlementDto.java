@@ -1,6 +1,5 @@
 package com.lime.minipay.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lime.minipay.entity.Member;
 import com.lime.minipay.entity.MemberSettlement;
 import com.lime.minipay.entity.Settlement;
@@ -28,6 +27,7 @@ public class SettlementDto {
     @AllArgsConstructor
     @Getter
     public static class Response {
+        private Long settlementId;
         private List<MemberSettlementInfo> participants;
         private Long amount;
         private Long remainAmount;
@@ -35,6 +35,7 @@ public class SettlementDto {
 
         public static Response of(Settlement settlement, List<MemberSettlement> memberSettlements) {
             Response response = new Response();
+            response.settlementId = settlement.getSettlementId();
             response.participants = new ArrayList<>();
             response.amount = settlement.getAmount();
             response.remainAmount = settlement.getRemainAmount();
@@ -52,6 +53,7 @@ public class SettlementDto {
     @AllArgsConstructor
     @NoArgsConstructor(access = AccessLevel.PACKAGE)
     public static class MemberSettlementInfo {
+        private Long memberSettlementId;
         private Long memberId;
         private String memberName;
         private Long amount;
@@ -59,7 +61,8 @@ public class SettlementDto {
 
         public static MemberSettlementInfo of(MemberSettlement memberSettlement) {
             Member debtorMember = memberSettlement.getDebtorMember();
-            MemberSettlementInfo memberSettlementInfo = new MemberSettlementInfo(debtorMember.getMemberId(),
+            MemberSettlementInfo memberSettlementInfo = new MemberSettlementInfo(
+                    memberSettlement.getMemberSettlementId(), debtorMember.getMemberId(),
                     debtorMember.getName(), memberSettlement.getAmount(), memberSettlement.getIsComplete());
 
             return memberSettlementInfo;

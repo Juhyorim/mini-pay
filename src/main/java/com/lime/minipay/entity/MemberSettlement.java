@@ -1,6 +1,7 @@
 package com.lime.minipay.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -20,15 +21,15 @@ public class MemberSettlement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberSettlementId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "settlementId")
     private Settlement settlement;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creditor_id", referencedColumnName = "memberId")
     private Member creditorMember;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "debtor_id", referencedColumnName = "memberId")
     private Member debtorMember;
 

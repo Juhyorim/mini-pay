@@ -52,6 +52,7 @@ public class MainAccountService {
     public MainAccountDto.Response transferToMember(Member member, MainAccountDto.TransferToMemberRequest request) {
         Member toUser = memberRepository.findById(request.getMemberId())
                 .orElseThrow(() -> new RuntimeException());
+        log.info("이체시작: " + member.getMemberId() + " => " + toUser.getMemberId());
 
         MainAccount toAccount = mainAccountRepository.findByMemberWithLock(toUser)
                 .orElseThrow(() -> new RuntimeException());

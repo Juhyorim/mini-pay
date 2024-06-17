@@ -12,7 +12,9 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -51,6 +53,7 @@ public class MainAccount {
         }
 
         this.balance += cash;
+        log.info("@@@: " + this.balance);
         this.dayCharged += cash;
     }
 
@@ -64,7 +67,8 @@ public class MainAccount {
             autoChargeCash(amount);
         }
 
-        this.balance -= amount;
+        log.info("@@@TMPTMP: " + amount);
+        this.withDraw(amount);
         toAccount.receiveCash(amount);
 
         return this.balance;
@@ -73,7 +77,8 @@ public class MainAccount {
     private void autoChargeCash(Long amount) {
         //TODO 오차 확인
         //자동 충전 금액 계산(만원 단위)
-        Long chargeAmount = ((long) Math.ceil((amount - balance) / 10_000)) * 10_000;
+        Long chargeAmount = ((long) Math.ceil((double) (amount - balance) / 10_000)) * 10_000;
+        log.info("자동충전: " + chargeAmount);
 
         addCash(chargeAmount);
     }
