@@ -2,6 +2,7 @@ package com.lime.minipay.controller;
 
 import com.lime.minipay.dto.MainAccountDto;
 import com.lime.minipay.dto.MainAccountDto.Response;
+import com.lime.minipay.dto.TransferDto;
 import com.lime.minipay.entity.Member;
 import com.lime.minipay.service.MainAccountService;
 import com.lime.minipay.service.MemberService;
@@ -28,7 +29,8 @@ public class MainAccountController {
     }
 
     @PostMapping("charge-cash")
-    public ResponseEntity<MainAccountDto.Response> addCash(@RequestBody MainAccountDto.AddCashRequest request, HttpServletRequest httpServletRequest)
+    public ResponseEntity<MainAccountDto.Response> addCash(@RequestBody MainAccountDto.AddCashRequest request,
+                                                           HttpServletRequest httpServletRequest)
             throws InterruptedException {
         Member member = (Member) httpServletRequest.getAttribute("member");
         member = memberService.findById(member.getMemberId());
@@ -38,12 +40,13 @@ public class MainAccountController {
         return ResponseEntity.ok(response);
     }
 
-    @PatchMapping("transfer")
-    public ResponseEntity<MainAccountDto.Response> transferToMember(@RequestBody MainAccountDto.TransferToMemberRequest request, HttpServletRequest httpServletRequest) {
+    @PatchMapping("transfer") //송금 생성
+    public ResponseEntity<TransferDto.TransferResponse> transferToMember(
+            @RequestBody MainAccountDto.TransferToMemberRequest request, HttpServletRequest httpServletRequest) {
         Member member = (Member) httpServletRequest.getAttribute("member");
         member = memberService.findById(member.getMemberId());
 
-        MainAccountDto.Response response = mainAccountService.transferToMember(member, request);
+        TransferDto.TransferResponse response = mainAccountService.transferToMember(member, request);
 
         return ResponseEntity.ok(response);
     }

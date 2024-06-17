@@ -57,11 +57,12 @@ public class MainAccount {
         this.dayCharged += cash;
     }
 
-    public void withDraw(Long amount) {
+    private void withDraw(Long amount) {
         this.balance -= amount;
     }
 
-    public Long transferCash(MainAccount toAccount, Long amount) {
+    //송금 보내기
+    public Long transferCash(Long amount) {
         if (this.balance < amount) {
             //만원단위 충전하기
             autoChargeCash(amount);
@@ -69,7 +70,6 @@ public class MainAccount {
 
         log.info("@@@TMPTMP: " + amount);
         this.withDraw(amount);
-        toAccount.receiveCash(amount);
 
         return this.balance;
     }

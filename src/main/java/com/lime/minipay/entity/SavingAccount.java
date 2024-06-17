@@ -36,10 +36,11 @@ public class SavingAccount {
     }
 
     public void addCash(Long amount) {
-        if (mainAccount.getBalance() < amount)
+        if (mainAccount.getBalance() < amount) {
             throw new NoMoneyEnoughException();
+        }
 
-        mainAccount.withDraw(amount);
+        mainAccount.transferCash(amount);
         this.balance += amount;
     }
 }
