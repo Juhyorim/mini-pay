@@ -1,9 +1,7 @@
 package com.lime.minipay.controller;
 
 import com.lime.minipay.dto.MainAccountDto;
-import com.lime.minipay.dto.MainAccountDto.Response;
 import com.lime.minipay.dto.TransferDto;
-import com.lime.minipay.dto.TransferDto.Info;
 import com.lime.minipay.entity.Member;
 import com.lime.minipay.service.MainAccountService;
 import com.lime.minipay.service.MemberService;
@@ -13,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+//TODO 카카오페이가 언제 주냐
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("main-account")
@@ -36,7 +35,7 @@ public class MainAccountController {
         Member member = (Member) httpServletRequest.getAttribute("member");
         member = memberService.findById(member.getMemberId());
 
-        Response response = mainAccountService.addCash(member, request);
+        MainAccountDto.Response response = mainAccountService.addCash(member, request);
 
         return ResponseEntity.ok(response);
     }
@@ -58,7 +57,7 @@ public class MainAccountController {
         Member member = (Member) httpServletRequest.getAttribute("member");
         member = memberService.findById(member.getMemberId());
 
-        Info transferDetail = mainAccountService.getTransferDetail(member, transferId);
+        TransferDto.Info transferDetail = mainAccountService.getTransferDetail(member, transferId);
 
         return ResponseEntity.ok(transferDetail);
     }
@@ -69,7 +68,7 @@ public class MainAccountController {
         Member member = (Member) httpServletRequest.getAttribute("member");
         member = memberService.findById(member.getMemberId());
 
-        Info transferDetail = mainAccountService.cancel(member, transferId);
+        TransferDto.Info transferDetail = mainAccountService.cancel(member, transferId);
 
         return ResponseEntity.ok(transferDetail);
     }
@@ -80,7 +79,7 @@ public class MainAccountController {
         Member member = (Member) httpServletRequest.getAttribute("member");
         member = memberService.findById(member.getMemberId());
 
-        Info transferDetail = mainAccountService.approve(member, transferId);
+        TransferDto.Info transferDetail = mainAccountService.approve(member, transferId);
 
         return ResponseEntity.ok(transferDetail);
     }
