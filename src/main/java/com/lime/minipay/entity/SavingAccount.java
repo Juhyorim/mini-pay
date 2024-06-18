@@ -1,8 +1,11 @@
 package com.lime.minipay.entity;
 
+import com.lime.minipay.entity.enums.SavingAccountType;
 import com.lime.minipay.error.NoMoneyEnoughException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,10 +13,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class SavingAccount {
@@ -26,7 +27,13 @@ public class SavingAccount {
     private MainAccount mainAccount;
 
     @Column(nullable = false)
-    private Long balance = 0L;
+    private Long principal = 0L;
+
+    @Column(nullable = false)
+    private Long interest = 0L;
+
+    @Enumerated(EnumType.STRING)
+    private SavingAccountType type;
 
     public static SavingAccount of(MainAccount mainAccount) {
         SavingAccount savingAccount = new SavingAccount();
@@ -41,6 +48,18 @@ public class SavingAccount {
         }
 
         mainAccount.transferCash(amount);
-        this.balance += amount;
+        this.principal += amount;
+    }
+
+    public Long getBalance() {
+        return this.principal + this.interest;
+    }
+
+    public Long getSavingAccountId() {
+        return this.savingAccountId;
+    }
+
+    public MainAccount getMainAccount() {
+        return this.mainAccount;
     }
 }
