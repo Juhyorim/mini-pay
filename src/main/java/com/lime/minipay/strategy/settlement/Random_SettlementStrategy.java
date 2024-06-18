@@ -1,4 +1,4 @@
-package com.lime.minipay.strategy;
+package com.lime.minipay.strategy.settlement;
 
 import com.lime.minipay.DividedMoneys;
 import com.lime.minipay.entity.enums.SettlementType;

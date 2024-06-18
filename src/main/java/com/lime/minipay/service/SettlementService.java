@@ -13,7 +13,7 @@ import com.lime.minipay.error.ForbiddenException;
 import com.lime.minipay.repository.MemberRepository;
 import com.lime.minipay.repository.MemberSettlementRepository;
 import com.lime.minipay.repository.SettlementRepository;
-import com.lime.minipay.strategy.SettlementStrategy;
+import com.lime.minipay.strategy.settlement.SettlementStrategy;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
