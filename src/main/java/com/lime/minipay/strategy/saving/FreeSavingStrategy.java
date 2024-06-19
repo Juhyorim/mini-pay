@@ -5,7 +5,8 @@ import com.lime.minipay.entity.enums.SavingAccountType;
 public class FreeSavingStrategy implements SavingStrategy {
     @Override
     public Long calculateInterest(Long principal) {
-        return null;
+        //단리 3%
+        return principal * 3 / 100;
     }
 
     @Override
