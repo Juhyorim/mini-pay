@@ -27,7 +27,7 @@ public class SavingAccountController {
 
     @PostMapping("add")
     public ResponseEntity addNewSavingAccount(HttpServletRequest httpServletRequest,
-                                              SavingAccountDto.AddAccountRequest request) {
+                                              @RequestBody SavingAccountDto.AddAccountRequest request) {
         Member member = (Member) httpServletRequest.getAttribute("member");
         member = memberService.findById(member.getMemberId());
 
@@ -48,7 +48,8 @@ public class SavingAccountController {
 
     @PostMapping("charge-cash")
     public ResponseEntity<MainAccountDto.Response> chargeCash(@RequestBody SavingAccountDto.ChargeRequest request,
-                                                              HttpServletRequest httpServletRequest) {
+                                                              HttpServletRequest httpServletRequest)
+            throws InterruptedException {
         Member member = (Member) httpServletRequest.getAttribute("member");
         member = memberService.findById(member.getMemberId());
 

@@ -17,4 +17,8 @@ public interface SavingAccountRepository extends JpaRepository<SavingAccount, Lo
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select sa from SavingAccount sa where sa.savingAccountId=:id")
     Optional<SavingAccount> findByIdWithLock(Long id);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("select sa from SavingAccount sa")
+    Optional<List<SavingAccount>> findAllWithLock();
 }

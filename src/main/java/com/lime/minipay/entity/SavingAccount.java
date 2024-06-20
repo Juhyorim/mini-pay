@@ -71,4 +71,8 @@ public class SavingAccount {
     public MainAccount getMainAccount() {
         return this.mainAccount;
     }
+
+    public void addInterest(Long interest) {
+        this.interest += interest;
+    }
 }

@@ -36,7 +36,7 @@ public class MainAccountService {
                 .build();
     }
 
-    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.REPEATABLE_READ)
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.REPEATABLE_READ)
     public MainAccountDto.Response addCash(Member member, AddCashRequest request) throws InterruptedException {
         MainAccount mainAccount = mainAccountRepository.findByMemberWithLock(member)
                 .orElseThrow(() -> new RuntimeException());
