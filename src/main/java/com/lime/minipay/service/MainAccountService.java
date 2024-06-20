@@ -56,7 +56,7 @@ public class MainAccountService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.REPEATABLE_READ)
     public MainAccountDto.Response addCashToAccount(MainAccount mainAccount, AddCashRequest request) {
         mainAccountRepository.findByIdWithLock(mainAccount.getMainAccountId())
-                        .orElseThrow(() -> new RuntimeException());
+                .orElseThrow(() -> new RuntimeException());
 
         log.info("###: " + mainAccount.getBalance());
         mainAccount.addCash(request.getAmount());
@@ -89,11 +89,16 @@ public class MainAccountService {
         Transfer transfer = Transfer.of(fromAccount, toAccount, request.getAmount());
         transferRepository.save(transfer);
 
+        //24시간 후 리마인딩 스케줄 추가
+        Runnable remindTask = () -> log.info("송금 리마인딩");
+        long remindDelay = 24 * 60 * 60 * 1000L;
+        taskScheduler.schedule(remindTask, new java.util.Date(System.currentTimeMillis() + remindDelay));
+
         //72시간 후 취소 스케줄 추가
         Runnable task = () -> transferService.cancel(transfer);
-//        long delay = 1 * 10 * 1000L; //10초컷 - 테스트용
-        long delay = 72 * 60 * 60 * 1000L; //실제로직
-        taskScheduler.schedule(task, new java.util.Date(System.currentTimeMillis() + delay));
+//        long transferCancelDelay = 1 * 10 * 1000L; //10초컷 - 테스트용
+        long transferCancelDelay = 72 * 60 * 60 * 1000L; //실제로직
+        taskScheduler.schedule(task, new java.util.Date(System.currentTimeMillis() + transferCancelDelay));
 
         return TransferDto.TransferResponse.builder()
                 .transferId(transfer.getTransferId())
