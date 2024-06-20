@@ -2,6 +2,7 @@ package com.lime.minipay.service;
 
 import com.lime.minipay.DividedMoneys;
 import com.lime.minipay.dto.MainAccountDto;
+import com.lime.minipay.dto.MainAccountDto.AddCashRequest;
 import com.lime.minipay.dto.SettlementDto;
 import com.lime.minipay.dto.SettlementDto.Create;
 import com.lime.minipay.dto.SettlementDto.Response;
@@ -17,9 +18,11 @@ import com.lime.minipay.strategy.settlement.SettlementStrategy;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
@@ -30,6 +33,7 @@ public class SettlementService {
     private final List<SettlementStrategy> settlementStrategies;
     private final MainAccountService mainAccountService;
 
+    //TODO refactoring
     @Transactional
     public SettlementDto.Response create(Member member, Create request) {
         //settlement 생성
@@ -62,6 +66,10 @@ public class SettlementService {
             memberSettlement = memberSettlementRepository.save(memberSettlement);
             memberSettlements.add(memberSettlement);
         }
+
+        //남는 돈은 라임페이가 쏜다
+        mainAccountService.addCash(member, new AddCashRequest(dividedMoneys.getRemain()));
+        log.info("라임페이가 쏜다! " + dividedMoneys.getRemain() + "원");
 
         return SettlementDto.Response.of(settlement, memberSettlements);
     }
