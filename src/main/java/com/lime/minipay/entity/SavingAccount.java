@@ -35,9 +35,10 @@ public class SavingAccount {
     @Enumerated(EnumType.STRING)
     private SavingAccountType type;
 
-    public static SavingAccount of(MainAccount mainAccount) {
+    public static SavingAccount of(MainAccount mainAccount, SavingAccountType type) {
         SavingAccount savingAccount = new SavingAccount();
         savingAccount.mainAccount = mainAccount;
+        savingAccount.type = type;
 
         return savingAccount;
     }
@@ -55,8 +56,16 @@ public class SavingAccount {
         return this.principal + this.interest;
     }
 
+    public SavingAccountType getType() {
+        return this.type;
+    }
+
     public Long getSavingAccountId() {
         return this.savingAccountId;
+    }
+
+    public Long getPrincipal() {
+        return this.principal;
     }
 
     public MainAccount getMainAccount() {

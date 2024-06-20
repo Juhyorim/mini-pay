@@ -1,6 +1,7 @@
 package com.lime.minipay.dto;
 
 import com.lime.minipay.entity.SavingAccount;
+import com.lime.minipay.entity.enums.SavingAccountType;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -36,5 +37,12 @@ public class SavingAccountDto {
     public static class ChargeRequest {
         private Long amount;
         private Long savingAccountId;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class AddAccountRequest {
+        private SavingAccountType type;
     }
 }
