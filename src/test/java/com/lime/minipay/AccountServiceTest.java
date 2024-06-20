@@ -25,12 +25,8 @@ public class AccountServiceTest {
                 .orElseThrow(() -> new RuntimeException());
 
         Runnable task = () -> {
-            try {
-                AddCashRequest request = new AddCashRequest(100L);
-                accountService.addCash(member, request);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            AddCashRequest request = new AddCashRequest(100L);
+            accountService.addCash(member, request);
         };
 
         Thread thread1 = new Thread(task);

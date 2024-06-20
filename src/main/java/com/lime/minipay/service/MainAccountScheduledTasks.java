@@ -9,22 +9,22 @@ import org.springframework.stereotype.Service;
 public class MainAccountScheduledTasks {
     private final TaskScheduler taskScheduler;
     private final MainAccountService mainAccountService;
-    private String cron = "0 0 0 * * ?"; //테스트용: 0 0/1 * * * ?
+    private String dayChargedCron = "0 0 0 * * ?"; //테스트용: 0 0/1 * * * ?
 
     public MainAccountScheduledTasks(TaskScheduler taskScheduler, MainAccountService mainAccountService) {
         this.taskScheduler = taskScheduler;
         this.mainAccountService = mainAccountService;
 
-        scheduleTask();
+        initDayChargedTask();
     }
 
-    public void scheduleTask() {
+    public void initDayChargedTask() {
         Runnable task = () -> mainAccountService.initDayCharged();
 
-        taskScheduler.schedule(task, getCronTrigger());
+        taskScheduler.schedule(task, getCronTrigger(dayChargedCron));
     }
 
-    private Trigger getCronTrigger() {
+    private Trigger getCronTrigger(String cron) {
         return new CronTrigger(cron);
     }
 

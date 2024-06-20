@@ -13,6 +13,7 @@ import com.lime.minipay.repository.MemberRepository;
 import com.lime.minipay.repository.TransferRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -23,9 +24,11 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Service
 public class MainAccountService {
+    private final TaskScheduler taskScheduler;
     private final MainAccountRepository mainAccountRepository;
     private final MemberRepository memberRepository;
     private final TransferRepository transferRepository;
+    private final TransferService transferService;
 
     public MainAccountDto.Response getMainAccount(Member member) {
         MainAccount account = mainAccountRepository.findByMemberWithLock(member)
@@ -40,6 +43,20 @@ public class MainAccountService {
     public MainAccountDto.Response addCash(Member member, AddCashRequest request) {
         MainAccount mainAccount = mainAccountRepository.findByMemberWithLock(member)
                 .orElseThrow(() -> new RuntimeException());
+
+        log.info("###: " + mainAccount.getBalance());
+        mainAccount.addCash(request.getAmount());
+        log.info("###: " + mainAccount.getBalance());
+
+        return MainAccountDto.Response.builder()
+                .balance(mainAccount.getBalance())
+                .build();
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.REPEATABLE_READ)
+    public MainAccountDto.Response addCashToAccount(MainAccount mainAccount, AddCashRequest request) {
+        mainAccountRepository.findByIdWithLock(mainAccount.getMainAccountId())
+                        .orElseThrow(() -> new RuntimeException());
 
         log.info("###: " + mainAccount.getBalance());
         mainAccount.addCash(request.getAmount());
@@ -71,6 +88,12 @@ public class MainAccountService {
         //송금 생성
         Transfer transfer = Transfer.of(fromAccount, toAccount, request.getAmount());
         transferRepository.save(transfer);
+
+        //72시간 후 취소 스케줄 추가
+        Runnable task = () -> transferService.cancel(transfer);
+//        long delay = 1 * 10 * 1000L; //10초컷 - 테스트용
+        long delay = 72 * 60 * 60 * 1000L; //실제로직
+        taskScheduler.schedule(task, new java.util.Date(System.currentTimeMillis() + delay));
 
         return TransferDto.TransferResponse.builder()
                 .transferId(transfer.getTransferId())

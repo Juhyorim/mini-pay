@@ -22,4 +22,8 @@ public interface MainAccountRepository extends JpaRepository<MainAccount, Long> 
     @Modifying
     @Query("update MainAccount m set m.dayCharged = 0")
     void initDayCharged();
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("select ma from MainAccount ma where ma.mainAccountId = :mainAccountId")
+    Optional<MainAccount> findByIdWithLock(Long mainAccountId);
 }
