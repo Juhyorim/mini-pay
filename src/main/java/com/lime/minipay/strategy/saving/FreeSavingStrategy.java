@@ -1,7 +1,9 @@
 package com.lime.minipay.strategy.saving;
 
 import com.lime.minipay.entity.enums.SavingAccountType;
+import org.springframework.stereotype.Component;
 
+@Component
 public class FreeSavingStrategy implements SavingStrategy {
     @Override
     public Long calculateInterest(Long principal) {

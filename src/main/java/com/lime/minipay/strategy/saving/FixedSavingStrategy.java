@@ -1,7 +1,9 @@
 package com.lime.minipay.strategy.saving;
 
 import com.lime.minipay.entity.enums.SavingAccountType;
+import org.springframework.stereotype.Component;
 
+@Component
 public class FixedSavingStrategy implements SavingStrategy {
     //매일 오전 8시에 가입한 금액 만큼 자동으로 출금, 이율은 단리로 5%
     @Override
