@@ -19,6 +19,7 @@ public class MemberService {
 
     private static final Long defaultChargeLimit = 3_000_000L;
 
+    @Transactional
     public Member addMember(MemberDto.CreateRequest request) {
         Member member = Member.createMember(request.getLoginId(), request.getPassword(), request.getName());
         Member savedMember = memberRepository.save(member);

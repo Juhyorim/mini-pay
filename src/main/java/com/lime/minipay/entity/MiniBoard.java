@@ -21,4 +21,16 @@ public class MiniBoard {
     private String title;
 
     private String content;
+
+    //디폴트0
+    private Long viewCount = 0L;
+
+    public MiniBoard(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
+    public void increaseViewCount() {
+        this.viewCount++;
+    }
 }

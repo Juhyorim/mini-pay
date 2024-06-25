@@ -37,7 +37,7 @@ public class LoginFilter implements Filter {
                 "/api/v1/boards/popular", "/api/v1/users/nickname/*/exists", "/api/v1/token/reissue",
                 "/swagger-ui/index.html",
                 "/member/signup",
-                "/member/login", "/favicon**"
+                "/member/login", "/favicon**", "/mini-board/**"
         );
 
         if (matchesPattern(contextPath, paths, antPathMatcher)) {
