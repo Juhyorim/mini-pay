@@ -51,15 +51,18 @@ public class MainAccount {
         return mainAccount;
     }
 
-    public void addCash(Long cash) {
+    public void chargeCash(Long cash) {
         //일일 충전 한도 초과 확인
         if (dayCharged + cash > chargeLimit) {
             throw new ExceedChargeLimitException(ErrorMessage.EXCEED_CHARGE_LIMIT.getMessage());
         }
 
-        this.balance += cash;
-        log.info("@@@: " + this.balance);
+        addCash(cash);
         this.dayCharged += cash;
+    }
+
+    private void addCash(Long cash) {
+        this.balance += cash;
     }
 
     private void withDraw(Long amount) {
@@ -77,7 +80,6 @@ public class MainAccount {
             autoChargeCash(amount);
         }
 
-        log.info("@@@TMPTMP: " + amount);
         this.withDraw(amount);
 
         return this.balance;
@@ -89,18 +91,10 @@ public class MainAccount {
         Long chargeAmount = ((long) Math.ceil((double) (amount - balance) / 10_000)) * 10_000;
         log.info("자동충전: " + chargeAmount);
 
-        addCash(chargeAmount);
+        chargeCash(chargeAmount);
     }
 
-    public void transferCancel(Long amount) {
-        receiveCash(amount);
-    }
-
-    private void receiveCash(Long amount) {
-        this.balance += amount;
-    }
-
-    public void transferComplete(Long amount) {
-        receiveCash(amount);
+    public void getTransferCash(Long amount) {
+        addCash(amount);
     }
 }

@@ -54,11 +54,11 @@ public class Transfer {
 
     public void cancel() {
         this.status = TransferStatus.CANCEL;
-        this.fromAccount.transferCancel(this.amount);
+        this.fromAccount.getTransferCash(this.amount);
     }
 
     public void approve() {
         this.status = TransferStatus.COMPLETE;
-        this.toAccount.transferComplete(this.amount);
+        this.toAccount.getTransferCash(this.amount);
     }
 }

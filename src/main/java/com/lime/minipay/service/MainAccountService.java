@@ -16,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -50,7 +49,7 @@ public class MainAccountService {
                 .orElseThrow(() -> new RuntimeException());
 
         log.info("###: " + mainAccount.getBalance());
-        mainAccount.addCash(request.getAmount());
+        mainAccount.chargeCash(request.getAmount());
         log.info("###: " + mainAccount.getBalance());
 
         return MainAccountDto.Response.builder()
@@ -64,7 +63,7 @@ public class MainAccountService {
                 .orElseThrow(() -> new RuntimeException());
 
         log.info("###: " + mainAccount.getBalance());
-        mainAccount.addCash(request.getAmount());
+        mainAccount.chargeCash(request.getAmount());
         log.info("###: " + mainAccount.getBalance());
 
         return MainAccountDto.Response.builder()

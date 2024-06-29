@@ -43,7 +43,7 @@ public class MainAccountTest {
         MainAccount mainAccount = MainAccount.of(member, DEFAULT_CHARGE_LIMIT);
 
         //when
-        mainAccount.addCash(amount);
+        mainAccount.chargeCash(amount);
 
         //then
         assertThatNoException();
@@ -60,8 +60,8 @@ public class MainAccountTest {
         //when
         //then
         assertThatThrownBy(() -> {
-            mainAccount.addCash(1L);
-            mainAccount.addCash(DEFAULT_CHARGE_LIMIT);
+            mainAccount.chargeCash(1L);
+            mainAccount.chargeCash(DEFAULT_CHARGE_LIMIT);
         })
                 .isInstanceOf(ExceedChargeLimitException.class)
                 .hasMessageContaining(ErrorMessage.EXCEED_CHARGE_LIMIT.getMessage());
@@ -74,7 +74,7 @@ public class MainAccountTest {
         //given
         Member member = Member.createMember("loginId", "password", "라임");
         MainAccount mainAccount = MainAccount.of(member, DEFAULT_CHARGE_LIMIT);
-        mainAccount.addCash(DEFAULT_CHARGE_LIMIT);
+        mainAccount.chargeCash(DEFAULT_CHARGE_LIMIT);
 
         //when
         mainAccount.transferCash(amount);
@@ -84,7 +84,13 @@ public class MainAccountTest {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"100:10000", "10000:10000", "100000:100000", "12345:20000"}, delimiter = ':')
+    @CsvSource(
+            value = {
+                    "1:10000", "100:10000", "10000:10000", "100000:100000",
+                    "12345:20000", "9999:10000", "10001:20000"
+            },
+            delimiter = ':'
+    )
     @DisplayName("2. 인출 테스트 - 자동 충전")
     void withDrawWithAutoCharge(Long amount, Long chargeAmount) {
         //given

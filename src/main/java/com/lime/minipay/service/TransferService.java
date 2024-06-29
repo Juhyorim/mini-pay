@@ -28,7 +28,7 @@ public class TransferService {
         //취소 금액 돌려받기
         MainAccount mainAccount = mainAccountRepository.findByIdWithLock(transfer.getFromAccount().getMainAccountId())
                 .orElseThrow(() -> new RuntimeException());
-        mainAccount.addCash(transfer.getAmount());
+        mainAccount.chargeCash(transfer.getAmount());
 
         log.info("송금 취소: " + transfer.getAmount() + "원");
     }
