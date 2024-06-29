@@ -1,16 +1,16 @@
 package com.lime.minipay.config;
 
 import com.lime.minipay.filter.LoginFilter;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+@RequiredArgsConstructor
 @Configuration
 public class WebConfiguration implements WebMvcConfigurer {
-    @Autowired
-    private LoginFilter loginFilter;
+    private final LoginFilter loginFilter;
 
     @Bean
     public FilterRegistrationBean firstFilterRegister() {

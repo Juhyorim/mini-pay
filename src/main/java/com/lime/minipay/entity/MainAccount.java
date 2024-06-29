@@ -43,6 +43,9 @@ public class MainAccount {
         mainAccount.member = member;
         mainAccount.chargeLimit = chargeLimit;
 
+        //member의 MainAccount도 같이 초기화 되어야함
+        member.addMainAccount(mainAccount);
+
         return mainAccount;
     }
 

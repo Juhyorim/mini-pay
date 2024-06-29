@@ -43,6 +43,13 @@ public class Member {
         return newMember;
     }
 
+    public void addMainAccount(MainAccount mainAccount) {
+        if (this.mainAccount == null)
+            this.mainAccount = mainAccount;
+        else
+            throw new RuntimeException();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || this.getClass() != o.getClass()) {
