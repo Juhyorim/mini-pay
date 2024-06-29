@@ -1,12 +1,15 @@
 package com.lime.minipay.error;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+public enum ErrorMessage {
+    EXCEED_CHARGE_LIMIT("충전 한도 초과");
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-public class ErrorMessage {
     private String message;
+
+    ErrorMessage(String message) {
+        this.message = message;
+    }
+
+    public String getMessage() {
+        return this.message;
+    }
 }

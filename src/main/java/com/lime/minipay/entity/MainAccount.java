@@ -1,5 +1,6 @@
 package com.lime.minipay.entity;
 
+import com.lime.minipay.error.ErrorMessage;
 import com.lime.minipay.error.ExceedChargeLimitException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -52,7 +53,7 @@ public class MainAccount {
     public void addCash(Long cash) {
         //일일 충전 한도 초과 확인
         if (dayCharged + cash > chargeLimit) {
-            throw new ExceedChargeLimitException("충전 한도 초과");
+            throw new ExceedChargeLimitException(ErrorMessage.EXCEED_CHARGE_LIMIT.getMessage());
         }
 
         this.balance += cash;
