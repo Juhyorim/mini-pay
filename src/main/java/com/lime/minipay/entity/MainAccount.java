@@ -2,6 +2,7 @@ package com.lime.minipay.entity;
 
 import com.lime.minipay.error.ErrorMessage;
 import com.lime.minipay.error.ExceedChargeLimitException;
+import com.lime.minipay.error.NoMoneyEnoughException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -62,6 +63,10 @@ public class MainAccount {
     }
 
     private void withDraw(Long amount) {
+        if (this.balance < amount) {
+            throw new NoMoneyEnoughException(ErrorMessage.NO_MONEY_ENOUGH.getMessage());
+        }
+
         this.balance -= amount;
     }
 
